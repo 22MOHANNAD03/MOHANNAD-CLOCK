@@ -1,3 +1,26 @@
+if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.register('/service-worker.js')
+        .then(() => console.log('Service Worker Registered'))
+        .catch(err => console.error('Service Worker Error', err));
+}
+
+if (Notification.permission === 'default') {
+    Notification.requestPermission().then(permission => {
+        if (permission === 'granted') {
+            new Notification('Hello from your website!');
+        }
+    });
+}
+
+navigator.serviceWorker.ready.then(registration => {
+    registration.sync.register('sync-tag').catch(err => console.error(err));
+});
+
+setInterval(() => {
+    fetch('/keep-alive').catch(err => console.error('Ping failed:', err));
+}, 300000); // Ping every 5 minutes
+
+
 const currentTime = document.querySelector("h1"),
 content = document.querySelector(".content"),
 selectMenu = document.querySelectorAll("select"),
